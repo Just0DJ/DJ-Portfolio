@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +27,12 @@
             --grad1: #00d4ff;
             --grad2: #5f27cd;
             --grad3: #4ecdc4;
+            /* Frosted glass variables */
+            --frost-bg: rgba(26, 37, 58, 0.6);
+            --frost-bg-light: rgba(245, 245, 250, 0.6);
+            --frost-border: rgba(200, 200, 200, 0.30);
+            --frost-shadow: 0 8px 32px 0 rgba(30, 30, 60, 0.36);
+            --frost-blur: 20px;
         }
 
         [data-theme="light"] {
@@ -47,16 +54,17 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Smooth scrolling */
-        html {
+        /* Frosted Glass Effect */
+        .frost {
+            background: var(--frost-bg);
+            border-radius: 20px;
             scroll-behavior: smooth;
         }
 
         /* Intro Section */
         .intro {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            place-items: center;
             height: 100vh;
             text-align: center;
             font-size: 2.5em;
@@ -66,27 +74,54 @@
         }
 
         .intro span {
-            position: absolute;
+            grid-area: 1/1;
             opacity: 0;
-            animation: fadeInOut 3s linear forwards;
+            animation: fadeInOut 1.5s linear forwards;
             font-weight: 300;
             letter-spacing: 2px;
             white-space: nowrap;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
-        .intro span:nth-child(1) { animation-delay: 0s; }
-        .intro span:nth-child(2) { animation-delay: 3s; }
-        .intro span:nth-child(3) { animation-delay: 6s; }
-        .intro span:nth-child(4) { animation-delay: 9s; }
-        .intro span:nth-child(5) { animation-delay: 12s; }
+        .intro span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .intro span:nth-child(2) {
+            animation-delay: 1.5s;
+        }
+
+        .intro span:nth-child(3) {
+            animation-delay: 3s;
+        }
+
+        .intro span:nth-child(4) {
+            animation-delay: 4.5s;
+        }
+
+        .intro span:nth-child(5) {
+            animation-delay: 6s;
+        }
 
         @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(20px); }
-            10% { opacity: 1; transform: translateY(0); }
-            90% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-20px); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
         }
 
         /* Main Content */
@@ -111,7 +146,8 @@
             z-index: 1001;
             padding: 1rem 0;
             border-bottom: 1px solid var(--border-color);
-            display: none; /* Hide top menu bar */
+            display: none;
+            /* Hide top menu bar */
         }
 
         .top-nav-container {
@@ -166,16 +202,19 @@
             background: none;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 15px;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.8rem;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
         }
 
         .top-theme-toggle:hover {
             background: var(--accent-color);
             color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
         }
 
         /* Bottom Floating Menu */
@@ -283,7 +322,7 @@
             justify-content: center;
             background-image: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3));
             background-size: 200% 200%;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
             animation: gradientShift 6s ease infinite;
         }
 
@@ -292,9 +331,17 @@
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* Section scroll reveal */
@@ -359,6 +406,9 @@
             height: 400px;
             border-radius: 20px;
             background: var(--bg-secondary);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border: 2px solid var(--accent-color);
             display: flex;
             align-items: center;
@@ -368,6 +418,20 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
+        }
+
+        /* Responsive hero layout */
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .profile-img {
+                width: 240px;
+                height: 320px;
+                background-position: center;
+            }
         }
 
         .profile-img::before {
@@ -383,8 +447,13 @@
         }
 
         @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .hero h1 {
@@ -423,20 +492,22 @@
 
         .quick-link {
             display: inline-block;
-            padding: 0.75rem 1.5rem;
+            padding: 0.85rem 1.6rem;
             background: var(--bg-secondary);
             color: var(--accent-color);
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 999px;
             font-weight: 500;
             transition: all 0.3s ease;
             border: 1px solid var(--accent-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         .quick-link:hover {
             background: var(--accent-color);
             color: var(--bg-color);
             transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
         }
 
         @keyframes fadeInUp {
@@ -444,6 +515,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -595,12 +667,13 @@
         .projects-marquee {
             overflow: hidden;
             white-space: nowrap;
-            padding: 2rem 0;
+            padding: 3.5rem 0;
+            min-height: 460px;
         }
 
         .projects-track {
             display: inline-flex;
-            gap: 2rem;
+            gap: 1.5rem;
             animation: scroll 30s linear infinite;
         }
 
@@ -609,19 +682,68 @@
         }
 
         @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         .project-card {
             background: var(--bg-color);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
-            min-width: 300px;
+            min-width: 280px;
+            min-height: 320px;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-thumb {
+            width: 100%;
+            height: 160px;
+            margin: -1.25rem -1.25rem 1rem -1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            overflow: hidden;
+        }
+
+        .project-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 0.75rem;
+        }
+
+        .project-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .overlay-chip {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 999px;
+            padding: 0.35rem 0.7rem;
+            font-size: 0.75rem;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
 
         .project-card:hover {
@@ -671,29 +793,309 @@
             border-bottom-color: var(--accent-color);
         }
 
-        /* Experience Section */
+        /* Gallery Modal */
+        .gallery-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .gallery-modal {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 90%;
+            padding: 1rem 1rem 1.25rem;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .gallery-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .gallery-title {
+            font-size: 1.25rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .gallery-close {
+            background: none;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 999px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-close:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        .gallery-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            padding: 0.5rem;
+        }
+
+        .gallery-images img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Gallery Marquee Section */
+        .gallery {
+            background: var(--bg-secondary);
+        }
+
+        .gallery-marquee {
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 12px;
+            animation: marquee 22s linear infinite;
+            min-height: 120px;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        .marquee-img {
+            height: 120px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 60, 0.14);
+            background: #fff;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .marquee-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 60, 0.24);
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Experience Timeline */
         .experience {
             background: var(--bg-color);
         }
 
-        .experience-list {
-            max-width: 800px;
+        .timeline {
+            position: relative;
+            max-width: 900px;
             margin: 0 auto;
+            padding: 1rem 0;
         }
 
-        .experience-item {
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-color);
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: var(--border-color);
+            transform: translateX(-50%);
         }
 
-        .experience-item:last-child {
-            border-bottom: none;
+        .timeline-item {
+            padding: 0.5rem 1.5rem;
+            position: relative;
+            width: 50%;
         }
 
-        .experience-item h3 {
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 3rem;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 3rem;
+        }
+
+        .timeline-dot {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            border: 2px solid var(--bg-color);
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -8px;
+            transform: translateX(50%);
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -8px;
+            transform: translateX(-50%);
+        }
+
+        .timeline-date {
+            font-size: 1.1rem;
+            font-weight: bold;
             color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .timeline-content {
+            background: var(--bg-secondary);
+            padding: 0.75rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-content h3 {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
+        }
+
+        .timeline-content .org {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-content ul {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        .timeline-content ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-preview {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-preview.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .timeline-preview-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .timeline-preview-close:hover {
+            color: var(--accent-color);
+        }
+
+        .timeline-preview-content {
+            margin-top: 1rem;
+        }
+
+        .timeline-preview-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .timeline-more-btn {
+            background: none;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .timeline-more-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 4rem;
+                padding-right: 1rem;
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                left: 0;
+                text-align: left;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-dot,
+            .timeline-item:nth-child(even) .timeline-dot {
+                left: 20px;
+            }
         }
 
         /* Achievements Section */
@@ -922,6 +1324,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Scroll Indicator -->
     <div class="scroll-indicator">
@@ -930,7 +1333,7 @@
 
     <!-- Intro Section -->
     <div class="intro" id="intro">
-        <span>நான் டிஜே</span> <!-- Tamil -->
+        <span>நான் திஜே</span> <!-- Tamil -->
         <span>मैं डिजे</span> <!-- Hindi -->
         <span>أنا ديجي</span> <!-- Arabic -->
         <span>Je suis DiJay</span> <!-- French -->
@@ -962,15 +1365,17 @@
                 <div class="hero-left">
                     <h1>Diwaakar Jayaprakash</h1>
                     <p class="subtitle">Mechanical Engineering Undergraduate</p>
-                    <p class="tagline">CAD & robotics enthusiast building real-world solutions in engineering and tech.</p>
+                    <p class="tagline">CAD & robotics enthusiast building real-world solutions in engineering and tech.
+                    </p>
                     <div class="quick-links">
                         <a href="250921_Diwaakar-Resume.pdf" class="quick-link" download>Resume</a>
-                        <a href="https://linkedin.com/in/IamDijay" class="quick-link" target="_blank" rel="noopener">LinkedIn</a>
+                        <a href="https://linkedin.com/in/ImDijay" class="quick-link" target="_blank"
+                            rel="noopener">LinkedIn</a>
                         <a href="mailto:diwaakarjayaprakash@gmail.com" class="quick-link">Email</a>
                     </div>
                 </div>
                 <div class="hero-right">
-                    <div class="profile-img">DJ</div>
+                    <div class="profile-img" style="background-image: url('PFP.jpg');"></div>
                 </div>
             </div>
         </section>
@@ -980,12 +1385,13 @@
             <h2 class="section-title">About</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>Mechanical engineering undergrad at IIITDM Kancheepuram with hands-on skills in CAD, simulation, and rapid prototyping.</p>
+                    <p>Mechanical engineering undergrad at IIITDM Kancheepuram with hands-on skills in CAD, simulation,
+                        and rapid prototyping.</p>
                     <p>Experienced in cross-domain tools: MATLAB, Python, manufacturing, and robotics.</p>
                     <p>Passionate about tech-driven project design and data analysis.</p>
                     <p>Seeking opportunities to innovate and collaborate on multidisciplinary challenges.</p>
+                </div>
             </div>
-        </div>
         </section>
 
         <!-- Skills Section -->
@@ -1075,7 +1481,8 @@
             <h2 class="section-title">Projects</h2>
             <div class="projects-marquee">
                 <div class="projects-track">
-                    <div class="project-card">
+                    <div class="project-card" data-project="science-cache">
+                        <div class="project-thumb"><img src="PFP.jpg" alt="Science Cache System thumbnail"></div>
                         <h3>Science Cache System</h3>
                         <div class="project-meta">
                             <span>Tools: Fusion 360, OnShape, Rapid Prototyping</span>
@@ -1084,10 +1491,12 @@
                         <p>Modular sample storage for IRC 2025 competition; led system integration.</p>
                         <div class="project-links">
                             <a href="#" class="project-link">Repository</a>
-                            <a href="#" class="project-link">Gallery</a>
+                            <a href="#" class="project-link gallery-link" data-gallery="science-cache">Gallery</a>
                         </div>
+                        <div class="card-overlay"><span class="overlay-chip">Preview</span></div>
                     </div>
-                    <div class="project-card">
+                    <div class="project-card" data-project="mini-rover">
+                        <div class="project-thumb"><img src="PFP.jpg" alt="Mini Rover Chassis thumbnail"></div>
                         <h3>Mini Rover Chassis</h3>
                         <div class="project-meta">
                             <span>Tools: SolidWorks (CAD/Simulation)</span>
@@ -1096,23 +1505,28 @@
                         <p>Chassis design & motion/structural simulations, built for MaRS Rover Society.</p>
                         <div class="project-links">
                             <a href="#" class="project-link">Repository</a>
-                            <a href="#" class="project-link">Gallery</a>
+                            <a href="#" class="project-link gallery-link" data-gallery="mini-rover">Gallery</a>
                         </div>
+                        <div class="card-overlay"><span class="overlay-chip">Preview</span></div>
                     </div>
-                    <div class="project-card">
+                    <div class="project-card" data-project="erc-2025">
+                        <div class="project-thumb"><img src="PFP.jpg" alt="ERC 2025 project thumbnail"></div>
                         <h3>Gripper & Modular Chassis (ERC 2025)</h3>
                         <div class="project-meta">
                             <span>Tools: CAD, CNC machining, 3D printing</span>
                             <span>Role: Mechanical Team Member</span>
                         </div>
-                        <p>Ongoing rover competition project with CAD, CNC machining, 3D printing for rover competition.</p>
+                        <p>Ongoing rover competition project with CAD, CNC machining, 3D printing for rover competition.
+                        </p>
                         <div class="project-links">
                             <a href="#" class="project-link">Repository</a>
-                            <a href="#" class="project-link">Gallery</a>
+                            <a href="#" class="project-link gallery-link" data-gallery="erc-2025">Gallery</a>
                         </div>
+                        <div class="card-overlay"><span class="overlay-chip">Preview</span></div>
                     </div>
                     <!-- Duplicate cards for seamless scrolling -->
-                    <div class="project-card">
+                    <div class="project-card" data-project="science-cache">
+                        <div class="project-thumb"><img src="PFP.jpg" alt="Science Cache System thumbnail"></div>
                         <h3>Science Cache System</h3>
                         <div class="project-meta">
                             <span>Tools: Fusion 360, OnShape, Rapid Prototyping</span>
@@ -1121,10 +1535,12 @@
                         <p>Modular sample storage for IRC 2025 competition; led system integration.</p>
                         <div class="project-links">
                             <a href="#" class="project-link">Repository</a>
-                            <a href="#" class="project-link">Gallery</a>
+                            <a href="#" class="project-link gallery-link" data-gallery="science-cache">Gallery</a>
                         </div>
+                        <div class="card-overlay"><span class="overlay-chip">Preview</span></div>
                     </div>
-                    <div class="project-card">
+                    <div class="project-card" data-project="mini-rover">
+                        <div class="project-thumb"><img src="PFP.jpg" alt="Mini Rover Chassis thumbnail"></div>
                         <h3>Mini Rover Chassis</h3>
                         <div class="project-meta">
                             <span>Tools: SolidWorks (CAD/Simulation)</span>
@@ -1133,40 +1549,100 @@
                         <p>Chassis design & motion/structural simulations, built for MaRS Rover Society.</p>
                         <div class="project-links">
                             <a href="#" class="project-link">Repository</a>
-                            <a href="#" class="project-link">Gallery</a>
+                            <a href="#" class="project-link gallery-link" data-gallery="mini-rover">Gallery</a>
                         </div>
+                        <div class="card-overlay"><span class="overlay-chip">Preview</span></div>
                     </div>
-                    <div class="project-card">
+                    <div class="project-card" data-project="erc-2025">
+                        <div class="project-thumb"><img src="PFP.jpg" alt="ERC 2025 project thumbnail"></div>
                         <h3>Gripper & Modular Chassis (ERC 2025)</h3>
                         <div class="project-meta">
                             <span>Tools: CAD, CNC machining, 3D printing</span>
                             <span>Role: Mechanical Team Member</span>
                         </div>
-                        <p>Ongoing rover competition project with CAD, CNC machining, 3D printing for rover competition.</p>
+                        <p>Ongoing rover competition project with CAD, CNC machining, 3D printing for rover competition.
+                        </p>
                         <div class="project-links">
                             <a href="#" class="project-link">Repository</a>
-                            <a href="#" class="project-link">Gallery</a>
+                            <a href="#" class="project-link gallery-link" data-gallery="erc-2025">Gallery</a>
                         </div>
+                        <div class="card-overlay"><span class="overlay-chip">Preview</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Experience Section -->
+        <!-- Experience Timeline -->
         <section id="experience" class="section experience">
-            <h2 class="section-title">Experience</h2>
-            <div class="experience-list">
-                <div class="experience-item">
-                    <h3>Intern, ASML Semiconductor (Tech Mahindra)</h3>
-                    <p class="org">Analyzed components, ran CPD data analysis in MATLAB, coordinated mechanical/data teams for workflow and validation</p>
+            <h2 class="section-title">Experience Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">2025</span>
+                    <div class="timeline-content">
+                        <h3>Intern, ASML Semiconductor</h3>
+                        <p class="org">Tech Mahindra</p>
+                        <button class="timeline-more-btn" data-preview-id="preview-1">More</button>
+                        <div class="timeline-preview" id="preview-1">
+                            <button class="timeline-preview-close">&times;</button>
+                            <h3>Intern, ASML Semiconductor</h3>
+                            <p class="org">Tech Mahindra</p>
+                            <div class="timeline-preview-content">
+                                <ul>
+                                    <li>Conducted component analysis and performed CPD data analysis using MATLAB</li>
+                                    <li>Coordinated mechanical and data teams to streamline workflows and validation processes
+                                    </li>
+                                    <li>Supported documentation and interpretation of engineering insights for project
+                                        progression</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="experience-item">
-                    <h3>Assistant, EV Safety Battery Systems</h3>
-                    <p class="org">Thermal/load analysis using ANSYS, hands-on machinery and safety testing</p>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">2024</span>
+                    <div class="timeline-content">
+                        <h3>Assistant, EV Safety Battery Systems</h3>
+                        <p class="org">IIITDM Kancheepuram</p>
+                        <button class="timeline-more-btn" data-preview-id="preview-2">More</button>
+                        <div class="timeline-preview" id="preview-2">
+                            <button class="timeline-preview-close">&times;</button>
+                            <h3>Assistant, EV Safety Battery Systems</h3>
+                            <p class="org">IIITDM Kancheepuram</p>
+                            <div class="timeline-preview-content">
+                                <ul>
+                                    <li>Performed thermal and load analysis using ANSYS</li>
+                                    <li>Operated industrial machinery and participated in safety and stress-testing procedures
+                                    </li>
+                                    <li>Assisted in evaluating battery behaviour under various environmental and mechanical
+                                        conditions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="experience-item">
-                    <h3>Mechanical Team, MaRS Rover Society</h3>
-                    <p class="org">Design for competitions, fabrication (CNC, 3D print, laser cut), global rankings at ERC (4th) & IRC (16th)</p>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">2023–Present</span>
+                    <div class="timeline-content">
+                        <h3>Mechanical Team Member</h3>
+                        <p class="org">MaRS Rover Society</p>
+                        <button class="timeline-more-btn" data-preview-id="preview-3">More</button>
+                        <div class="timeline-preview" id="preview-3">
+                            <button class="timeline-preview-close">&times;</button>
+                            <h3>Mechanical Team Member, MaRS Rover Society</h3>
+                            <p class="org">MaRS Rover Society</p>
+                            <div class="timeline-preview-content">
+                                <ul>
+                                    <li>Contributed to rover design for international competitions</li>
+                                    <li>Hands-on fabrication: CNC machining, 3D printing, laser cutting, assembly</li>
+                                    <li>Achievements: 4th place at ERC (European Rover Challenge), 16th place at IRC
+                                        (International Rover Challenge)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1191,10 +1667,11 @@
             <h2 class="section-title">Contact</h2>
             <div class="contact-content">
                 <div class="contact-links">
-                    <a href="mailto:diwaakarjayaprakash@gmail.com" class="contact-link">Email: diwaakarjayaprakash@gmail.com</a>
+                    <a href="mailto:diwaakarjayaprakash@gmail.com" class="contact-link">Email:
+                        diwaakarjayaprakash@gmail.com</a>
                     <a href="https://linkedin.com/in/ImDijay" class="contact-link">LinkedIn: /in/ImDijay</a>
-                    <a href="#" class="contact-link">GitHub: /username</a>
-                    <a href="250921_Diwaakar-Resume.pdf" class="contact-link" download>Resume PDF</a>
+                    <a href="https://github.com/Just0DJ" class="contact-link">GitHub: /Just0DJ</a>
+                    <a href="250921_Diwaakar-Resume.pdf" class="contact-link" download>My Resume</a>
                 </div>
                 <form class="contact-form" id="contactForm">
                     <div class="form-group">
@@ -1211,11 +1688,24 @@
             </div>
         </section>
 
+        <!-- Gallery Modal -->
+        <div id="galleryModal" class="gallery-modal-overlay" hidden>
+            <div class="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="galleryTitle">
+                <div class="gallery-header">
+                    <div id="galleryTitle" class="gallery-title">Gallery</div>
+                    <button id="galleryClose" class="gallery-close">Close</button>
+                </div>
+                <div id="galleryImages" class="gallery-images">
+                    <!-- Images injected by script -->
+                </div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2025 Diwaakar J Portfolio</p>
         </footer>
-        </div>
+    </div>
 
     <!-- Bottom Floating Menu -->
     <div class="bottom-menu">
@@ -1226,7 +1716,7 @@
     <script>
         // Animation control variables
         let skipping = false;
-        let animationSpeed = 3000; // Default 3 seconds per text
+        let animationSpeed = 1500; // Default 1.5 seconds per text
         let currentTextIndex = 0;
         const introTexts = [
             'நான் டிஜே', 'मैं डिजे', 'أنا ديجي', 'Je suis DiJay', 'I am DiJay'
@@ -1234,7 +1724,7 @@
 
         // Theme and accent color management
         const accentColors = [
-            '#00d4ff', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', 
+            '#00d4ff', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4',
             '#feca57', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3',
             '#ff4757', '#2ed573', '#ffa502', '#ff6348', '#5352ed',
             '#ff3838', '#32ff7e', '#ff9f1a', '#ff6b9d', '#4834d4',
@@ -1276,33 +1766,34 @@
         // Animation progression control
         function startIntroAnimation() {
             const intro = document.getElementById('intro');
-            const spans = intro.querySelectorAll('span');
-            const bottomMenu = document.querySelector('.bottom-menu');
-            
+            const main = document.getElementById('main');
+
             // Hide menu during animation
+            const bottomMenu = document.querySelector('.bottom-menu');
             bottomMenu.style.display = 'none';
-            
+
             function showNextText() {
                 // Hide all texts
+                const spans = intro.querySelectorAll('span');
                 spans.forEach(span => {
                     span.style.opacity = '0';
                 });
-                
+
                 // Show current text
                 if (spans[currentTextIndex]) {
                     spans[currentTextIndex].style.opacity = '1';
                 }
-                
+
                 currentTextIndex++;
-                
+
                 if (currentTextIndex >= spans.length) {
                     // Animation complete, transition to main content
-            setTimeout(() => {
+                    setTimeout(() => {
                         intro.style.opacity = '0';
-                setTimeout(() => {
+                        setTimeout(() => {
                             intro.style.display = 'none';
-                            document.getElementById('main').classList.add('active');
-                    document.body.style.overflow = 'auto';
+                            main.classList.add('active');
+                            document.body.style.overflow = 'auto';
                             // Show menu after animation
                             bottomMenu.style.display = 'flex';
                             bottomMenu.classList.add('show');
@@ -1310,11 +1801,11 @@
                     }, skipping ? 100 : 2000);
                     return;
                 }
-                
+
                 // Schedule next text
                 setTimeout(showNextText, skipping ? 100 : animationSpeed);
             }
-            
+
             showNextText();
         }
 
@@ -1361,7 +1852,7 @@
             const scrollUpBtn = document.getElementById('scrollUp');
             const modeBtn = document.getElementById('darkModeToggle');
             const topModeBtn = document.getElementById('topModeToggle');
-            
+
             // Scroll to top
             if (scrollUpBtn) {
                 scrollUpBtn.addEventListener('click', () => {
@@ -1395,15 +1886,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             const intro = document.getElementById('intro');
             const main = document.getElementById('main');
-            
+
             // Initialize theme mode from storage
             const savedMode = localStorage.getItem(THEME_MODE_KEY);
             applyThemeMode(savedMode === 'light' ? 'light' : 'dark');
-            
+
             // Setup bottom menu and scroll reveal
             setupBottomMenu();
             setupScrollReveal();
-            
+
             // Start intro animation
             startIntroAnimation();
         });
@@ -1418,7 +1909,7 @@
             if (scrollProgress) {
                 scrollProgress.style.width = scrollPercent + '%';
             }
-            
+
             // Color change on scroll (both up and down) - every 100px scroll
             const scrollChange = Math.abs(scrollTop - lastScrollY);
             if (scrollChange >= 100) {
@@ -1428,11 +1919,297 @@
         });
 
         // Contact form handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm')?.addEventListener('submit', function (e) {
             e.preventDefault();
             alert('Thank you for your message! I\'ll get back to you soon.');
             this.reset();
         });
+
+        // Gallery modal handling
+        const galleryModal = document.getElementById('galleryModal');
+        const galleryTitle = document.getElementById('galleryTitle');
+        const galleryImagesEl = document.getElementById('galleryImages');
+        const galleryCloseBtn = document.getElementById('galleryClose');
+
+        // Ensure modal starts hidden
+        if (galleryModal) {
+            galleryModal.hidden = true;
+            galleryModal.style.display = 'none';
+        }
+
+        const projectData = {
+            'science-cache': {
+                title: 'Science Cache System',
+                desc: 'Modular sample storage system designed for IRC 2025, focusing on reliability and integration.'
+            },
+            'mini-rover': {
+                title: 'Mini Rover Chassis',
+                desc: 'Lightweight chassis with CAD and simulation studies for traction and load.'
+            },
+            'erc-2025': {
+                title: 'ERC 2025 Rover Modules',
+                desc: 'Gripper and modular chassis components with CNC and 3D printing.'
+            }
+        };
+
+        async function resolveGalleryImages(key) {
+            const manifestUrl = `gallery/${key}/manifest.json`;
+            try {
+                const res = await fetch(manifestUrl);
+                if (res.ok) {
+                    const json = await res.json();
+                    if (Array.isArray(json.images)) {
+                        return json.images.map(name => `gallery/${key}/${name}`);
+                    }
+                }
+            } catch (_) { }
+            const candidates = [];
+            const exts = ['jpg', 'png', 'jpeg', 'webp'];
+            for (let i = 1; i <= 20; i++) {
+                for (const ext of exts) {
+                    candidates.push(`gallery/${key}/${i}.${ext}`);
+                }
+            }
+            const results = await Promise.allSettled(candidates.map(src => probeImage(src)));
+            return results.filter(r => r.status === 'fulfilled').map(r => r.value);
+        }
+
+        function probeImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(src);
+                img.onerror = () => reject();
+                img.src = src;
+            });
+        }
+
+        const firstImageCache = {};
+        async function getFirstImage(key) {
+            if (firstImageCache[key]) return firstImageCache[key];
+            const imgs = await resolveGalleryImages(key);
+            firstImageCache[key] = imgs[0] || null;
+            return firstImageCache[key];
+        }
+
+        async function openGallery(key) {
+            const data = projectData[key] || {};
+            const images = await resolveGalleryImages(key);
+            galleryTitle.textContent = (data.title) || key.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            const details = data.desc ? `<p style="color: var(--text-secondary); margin: 0.5rem 0 1rem">${data.desc}</p>` : '';
+            const content = images.length
+                ? images.map(src => `<img src="${src}" alt="${key} preview">`).join('')
+                : `<p style="color: var(--text-secondary);">No images found. Add files under <code>gallery/${key}/</code> or create <code>manifest.json</code>.</p>`;
+            galleryImagesEl.innerHTML = details + content;
+            galleryModal.hidden = false;
+            galleryModal.style.display = 'flex';
+        }
+
+        function closeGallery() {
+            galleryModal.hidden = true;
+            galleryModal.style.display = 'none';
+            galleryImagesEl.innerHTML = '';
+        }
+
+        document.querySelectorAll('.gallery-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const key = link.getAttribute('data-gallery');
+                openGallery(key);
+            });
+        });
+
+        // Open gallery when clicking on project card
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const key = card.getAttribute('data-project');
+                if (key) openGallery(key);
+            });
+
+            // Hover preview inside card
+            let hoverTimer;
+            card.addEventListener('mouseenter', () => {
+                hoverTimer = setTimeout(async () => {
+                    const key = card.getAttribute('data-project');
+                    const img = await getFirstImage(key);
+                    if (!img) return;
+                    const preview = document.createElement('div');
+                    preview.className = 'hover-preview';
+                    preview.style.position = 'absolute';
+                    preview.style.top = '12px';
+                    preview.style.right = '12px';
+                    preview.style.background = 'rgba(0,0,0,0.7)';
+                    preview.style.border = '1px solid var(--border-color)';
+                    preview.style.borderRadius = '10px';
+                    preview.style.overflow = 'hidden';
+                    preview.style.boxShadow = '0 10px 24px rgba(0,0,0,0.35)';
+                    preview.style.backdropFilter = 'blur(4px)';
+                    preview.innerHTML = `<img src="${img}" alt="preview" style="width:160px;height:100px;object-fit:cover;display:block">`;
+                    card.appendChild(preview);
+                }, 180);
+            });
+            card.addEventListener('mouseleave', () => {
+                clearTimeout(hoverTimer);
+                const hp = card.querySelector('.hover-preview');
+                if (hp) hp.remove();
+            });
+        });
+
+        galleryCloseBtn.addEventListener('click', closeGallery);
+        galleryModal.addEventListener('click', (e) => {
+            // Close when clicking outside the modal content
+            if (!e.target.closest('.gallery-modal')) closeGallery();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !galleryModal.hidden) {
+                closeGallery();
+            }
+        });
+
+        // Timeline preview functionality
+        document.addEventListener('click', function(e) {
+            // Handle more button click
+            if (e.target.classList.contains('timeline-more-btn')) {
+                const previewId = e.target.getAttribute('data-preview-id');
+                const preview = document.getElementById(previewId);
+                if (preview) {
+                    preview.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+                }
+            }
+
+            // Handle close button click
+            if (e.target.classList.contains('timeline-preview-close') || 
+                e.target.classList.contains('timeline-preview')) {
+                document.querySelectorAll('.timeline-preview').forEach(preview => {
+                    preview.classList.remove('active');
+                });
+                document.body.style.overflow = ''; // Re-enable scrolling
+            }
+        });
+
+        // Close preview when clicking outside content
+        document.querySelectorAll('.timeline-preview').forEach(preview => {
+            preview.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                }
+            });
+        });
+
+        // Gallery Marquee Functionality
+        const marqueeTrack = document.getElementById('marqueeTrack');
+        const imgUpload = document.getElementById('imgUpload');
+        let uploadedImages = [];
+
+        // Handle image upload
+        if (imgUpload) {
+            imgUpload.addEventListener('change', (e) => {
+                const files = Array.from(e.target.files);
+
+                files.forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function (ev) {
+                            const img = document.createElement('img');
+                            img.src = ev.target.result;
+                            img.className = 'marquee-img';
+                            img.alt = file.name;
+                            img.title = file.name;
+
+                            // Add to track
+                            marqueeTrack.appendChild(img);
+                            uploadedImages.push(img);
+
+                            // Create duplicate for seamless scrolling
+                            const imgDuplicate = img.cloneNode(true);
+                            marqueeTrack.appendChild(imgDuplicate);
+
+                            // Adjust animation speed based on number of images
+                            updateMarqueeSpeed();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                // Clear input to allow re-uploading same files
+                e.target.value = '';
+            });
+        }
+
+        // Update marquee animation speed based on content
+        function updateMarqueeSpeed() {
+            const totalImages = marqueeTrack.children.length;
+            if (totalImages > 0) {
+                // Slower animation for more images
+                const duration = Math.max(15, 22 + (totalImages * 0.5));
+                marqueeTrack.style.animationDuration = `${duration}s`;
+            }
+        }
+
+        // Add drag and drop functionality
+        const galleryMarquee = document.querySelector('.gallery-marquee');
+        if (galleryMarquee) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                galleryMarquee.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                galleryMarquee.addEventListener(eventName, () => {
+                    galleryMarquee.style.background = 'var(--frost-bg)';
+                    galleryMarquee.style.border = '2px dashed var(--accent-color)';
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                galleryMarquee.addEventListener(eventName, () => {
+                    galleryMarquee.style.background = '';
+                    galleryMarquee.style.border = '';
+                });
+            });
+
+            galleryMarquee.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                if (files.length > 0) {
+                    imgUpload.files = files;
+                    const event = new Event('change', { bubbles: true });
+                    imgUpload.dispatchEvent(event);
+                }
+            });
+        }
+
+        // Add some default images if none uploaded
+        if (marqueeTrack && marqueeTrack.children.length === 0) {
+            const defaultImages = [
+                'PFP.jpg',
+                'PFP.jpg',
+                'PFP.jpg',
+                'PFP.jpg',
+                'PFP.jpg'
+            ];
+
+            defaultImages.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = 'marquee-img';
+                img.alt = `Gallery image ${index + 1}`;
+                img.title = `Gallery image ${index + 1}`;
+                marqueeTrack.appendChild(img);
+
+                // Create duplicate for seamless scrolling
+                const imgDuplicate = img.cloneNode(true);
+                marqueeTrack.appendChild(imgDuplicate);
+            });
+        }
     </script>
 </body>
 
