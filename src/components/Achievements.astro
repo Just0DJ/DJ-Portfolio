@@ -1,0 +1,34 @@
+---
+import { achievements } from '../data/content';
+---
+
+<section id="achievements" class="section achievements">
+  <h2 class="section-title">Achievements</h2>
+  <div class="achievements-marquee">
+    <div class="achievements-track">
+      {
+        [false, true].map((isClone) => (
+          <div class="projects-group" aria-hidden={isClone ? 'true' : undefined}>
+            {achievements.map((ach) => (
+              <div
+                class="achievement-card"
+                data-modal-open
+                data-modal-id={ach.id}
+                data-modal-type="achievement"
+                role="button"
+                tabindex={isClone ? -1 : 0}
+                aria-haspopup="dialog"
+              >
+                <div>
+                  <h3>{ach.title}</h3>
+                  <span class="achievement-role">{ach.rank}</span>
+                </div>
+                <span class="read-more">Read Details</span>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

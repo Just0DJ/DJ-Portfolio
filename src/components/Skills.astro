@@ -1,0 +1,67 @@
+---
+import { skills, skillLogos } from '../data/content';
+---
+
+<section id="skills" class="section skills">
+  <h2 class="section-title">Skills</h2>
+
+  <div class="skills-icon-marquee" aria-hidden="true">
+    <div class="skills-icon-track">
+      {
+        [false, true].map((isClone) => (
+          <div class="skills-group" aria-hidden={isClone ? 'true' : undefined}>
+            {skillLogos.map((logo) => (
+              <div class="skill-icon-item">
+                <div class="skill-icon">
+                  <img src={logo.src} alt={logo.name} class="skill-logo" loading="lazy" />
+                </div>
+                <span class="skill-icon-name">{logo.name}</span>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="skills-grid">
+    {
+      skills.map((skill) => (
+        <div
+          class="skill-category"
+          data-modal-open
+          data-modal-id={skill.id}
+          data-modal-type="skill"
+          role="button"
+          tabindex="0"
+          aria-haspopup="dialog"
+        >
+          <h3>{skill.title}</h3>
+          <ul class="skill-list">
+            {skill.list.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <div class="skill-level">
+            <div class="skill-level-bar">
+              <div class="skill-level-fill" style={`width: ${skill.levelPercent}%`} />
+            </div>
+            <span class="skill-level-text">{skill.level}</span>
+          </div>
+          <span class="read-more">View Details</span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  // Keyboard support for card-as-button: Enter/Space opens the modal.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-modal-open][role="button"]');
+    if (!card) return;
+    e.preventDefault();
+    card.click();
+  });
+</script>

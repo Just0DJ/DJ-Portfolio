@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Intro from '../components/Intro.astro';
+import Hero from '../components/Hero.astro';
+import Skills from '../components/Skills.astro';
+import Projects from '../components/Projects.astro';
+import Experience from '../components/Experience.astro';
+import Achievements from '../components/Achievements.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import Modal from '../components/Modal.astro';
+import { skills as skillData, achievements as achievementData } from '../data/content';
+
+const projects = await getCollection('projects');
+const experiences = await getCollection('experiences');
+
+// Modal registry entries (frontmatter only; full details live on case-study pages).
+const modalProjects = projects.map((p) => ({
+  id: p.id,
+  title: p.data.title,
+  subtitle: p.data.timeframe,
+  heroSrc: p.data.hero ? p.data.hero.src : '',
+  heroAlt: p.data.heroAlt ?? p.data.title,
+  details: [
+    { heading: 'About', body: p.data.description },
+    { heading: 'Full Case Study', body: 'Open the full write-up from the project card link.' },
+  ],
+}));
+
+const modalExperiences = experiences.map((e) => ({
+  id: e.id,
+  title: e.data.title,
+  subtitle: 'role' in e.data && e.data.role ? e.data.role : e.data.date,
+  heroSrc: e.data.hero ? e.data.hero.src : '',
+  heroAlt: e.data.heroAlt ?? e.data.title,
+  details: e.data.summary
+    ? [{ heading: 'Summary', body: e.data.summary }]
+    : [{ heading: 'Summary', body: 'Full write-up available on the experience case study page.' }],
+}));
+
+const modalSkills = skillData.map((s) => ({
+  id: s.id,
+  title: s.title,
+  subtitle: s.level,
+  heroSrc: '',
+  heroAlt: '',
+  details: s.details,
+}));
+
+const modalAchievements = achievementData.map((a) => ({
+  id: a.id,
+  title: a.title,
+  subtitle: a.role,
+  heroSrc: '',
+  heroAlt: '',
+  details: a.details,
+}));
+---
+
+<BaseLayout>
+  <div class="scroll-indicator">
+    <div class="scroll-progress" id="scrollProgress"></div>
+  </div>
+
+  <Intro />
+
+  <div class="main" id="main">
+    <Hero />
+    <Skills />
+    <Projects projects={projects} />
+    <Experience experiences={experiences} />
+    <Achievements />
+    <Contact />
+    <Footer />
+    <Modal />
+  </div>
+
+  <script type="application/json" id="modal-data" set:html={JSON.stringify({
+    skills: modalSkills,
+    achievements: modalAchievements,
+    experiences: modalExperiences,
+    projects: modalProjects,
+  })} />
+</BaseLayout>
+
+<script>
+  import { initModal } from '../scripts/modal';
+  import type { ModalDataSource } from '../scripts/modal';
+
+  const raw = document.getElementById('modal-data')?.textContent ?? '{}';
+  const data = JSON.parse(raw) as ModalDataSource;
+  initModal(data);
+</script>

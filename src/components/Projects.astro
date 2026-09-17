@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import pfp from '../assets/pfp.webp';
+import scienceCache2 from '../assets/science-cache-2.png';
+
+type ProjectEntry = Awaited<ReturnType<typeof getCollection<'projects'>>>[number];
+
+interface Props {
+  projects: ProjectEntry[];
+}
+
+const { projects } = Astro.props;
+
+const heroMap: Record<string, { src: typeof pfp; alt: string }> = {
+  'mars-rover': { src: scienceCache2, alt: 'Science Cache System prototype design' },
+  'smart-window': { src: pfp, alt: 'Smart Transparent Window System' },
+  'digital-twin': { src: pfp, alt: 'Digital Twin Framework' },
+};
+
+const cards = projects
+  .slice()
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map((entry) => ({
+    id: entry.id,
+    slug: entry.id,
+    title: entry.data.title,
+    description: entry.data.description,
+    timeframe: entry.data.timeframe,
+    tags: entry.data.tags,
+    hero: heroMap[entry.id] ?? { src: pfp, alt: entry.data.title },
+  }));
+---
+
+<section id="projects" class="section projects">
+  <h2 class="section-title">Projects</h2>
+
+  <div class="projects-marquee">
+    <div class="projects-track">
+      {
+        [false, true].map((isClone) => (
+          <div class="projects-group" aria-hidden={isClone ? 'true' : undefined}>
+            {cards.map((card) => (
+              <div
+                class="project-card"
+                data-modal-open
+                data-modal-id={card.id}
+                data-modal-type="project"
+                role="button"
+                tabindex={isClone ? -1 : 0}
+                aria-haspopup="dialog"
+              >
+                <div class="project-thumb">
+                  <Image src={card.hero.src} alt={card.hero.alt} widths={[320, 640]} sizes="320px" loading="lazy" />
+                </div>
+                <h3>{card.title}</h3>
+                <div class="project-meta">
+                  <span>{card.timeframe}</span>
+                </div>
+                <p>{card.description}</p>
+                <div class="project-tags">
+                  {card.tags.map((tag) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+                <div class="card-actions">
+                  <span class="read-more">View Details</span>
+                  <a href={`/projects/${card.slug}/`} class="case-link">Case Study →</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Keyboard support for card-as-button: Enter/Space opens the modal.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-modal-open][role="button"]');
+    if (!card) return;
+    e.preventDefault();
+    card.click();
+  });
+</script>

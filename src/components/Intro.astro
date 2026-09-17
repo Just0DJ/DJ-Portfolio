@@ -1,0 +1,28 @@
+---
+import { introTexts } from '../data/content';
+---
+
+<div class="intro" id="intro" aria-hidden="true">
+  {introTexts.map((text) => <span>{text}</span>)}
+  <span class="intro-hint">hold to skip</span>
+</div>
+
+<script>
+  // Crossfade through the intro texts. The reveal itself (including the
+  // hold-left-click fast-forward) lives in scripts/site.ts.
+  const STEP_MS = 1100;
+
+  const intro = document.getElementById('intro');
+  if (intro) {
+    const spans = intro.querySelectorAll<HTMLSpanElement>('.intro span:not(.intro-hint)');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) {
+      intro.style.display = 'none';
+    } else {
+      spans.forEach((span, i) => {
+        window.setTimeout(() => span.classList.add('visible'), i * STEP_MS);
+        window.setTimeout(() => span.classList.remove('visible'), i * STEP_MS + STEP_MS * 0.8);
+      });
+    }
+  }
+</script>

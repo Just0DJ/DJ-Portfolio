@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, timeframe, tags, hero, heroAlt } = entry.data;
+---
+
+<BaseLayout title={`${title} — DiJay Portfolio`} description={description}>
+  <article class="case-study">
+    <nav class="case-study-nav" aria-label="Breadcrumb">
+      <a href="/#projects">&larr; Back to Projects</a>
+    </nav>
+
+    <header class="case-study-header">
+      <h1>{title}</h1>
+      <p class="case-study-meta">{timeframe}</p>
+      <div class="project-tags">
+        {tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    </header>
+
+    {
+      hero && (
+        <div class="case-study-hero">
+          <Image src={hero} alt={heroAlt ?? title} widths={[768, 1200]} sizes="(max-width: 768px) 100vw, 1040px" />
+        </div>
+      )
+    }
+
+    <div class="case-study-body">
+      <Content />
+    </div>
+
+    <footer class="case-study-footer">
+      <a class="btn btn-primary" href="/#contact">Get in Touch</a>
+      <a class="btn btn-secondary" href="/#projects">More Projects</a>
+    </footer>
+  </article>
+
+  <Footer />
+</BaseLayout>
